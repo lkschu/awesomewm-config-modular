@@ -25,8 +25,8 @@ The `widgets` module is now better organized in this thread.
 Please note that the changes affected not only the `widgets` module,
 but also `bindings` and `signals`. 
 
-Feel free to submit PRs!
-
 ## Credits
 
 [This config](https://git.linuxit.us/spider/awesome/src/commit/921c5019df6a03915e09efcb1336bbca518a4401) was used as a base.
+
+[Modules created in this repo](https://github.com/suconakh/awesome-awesome-rc)
