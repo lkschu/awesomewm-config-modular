@@ -7,6 +7,8 @@ local apps = require'config.apps'
 local mod = require'bindings.mod'
 local widgets = require'widgets'
 
+local vars = require'config.vars'
+
 menubar.utils.terminal = apps.terminal
 
 -- general awesome keys
@@ -23,7 +25,7 @@ awful.keyboard.append_global_keybindings{
       key         = 'w',
       description = 'show main menu',
       group       = 'awesome',
-      on_press    = function() widgets.mainmenu:show() end,
+      on_press    = function() widgets.menu.mainmenu:show() end,
    },
    awful.key{
       modifiers   = {mod.super, mod.ctrl},
@@ -72,7 +74,8 @@ awful.keyboard.append_global_keybindings{
       key         = 'p',
       description = 'show the menubar',
       group       = 'launcher',
-      on_press    = function() menubar.show() end,
+      on_press    = function() awful.spawn(apps.launcher) end,
+      -- on_press    = function() menubar.show() end,
    },
 }
 
@@ -144,7 +147,7 @@ awful.keyboard.append_global_keybindings{
       on_press    = function()
          local c = awful.client.restore()
          if c then
-            c:active{raise = true, context = 'key.unminimize'}
+            c:activate { context = "unminimize", raise   = true, }
          end
       end,
    },
@@ -233,59 +236,106 @@ awful.keyboard.append_global_keybindings{
 
 awful.keyboard.append_global_keybindings{
    awful.key{
+      -- Switch to tag, might also switch screen if tag is on another screen
       modifiers   = {mod.super},
       keygroup    = 'numrow',
       description = 'only view tag',
       group       = 'tag',
       on_press    = function(index)
+         local screen_ind = 1
+         local index_delta = index
+
+         while index_delta - #vars.tags[screen_ind] > 0 do
+            index_delta = index_delta - #vars.tags[screen_ind]
+            screen_ind = screen_ind + 1
+            if screen_ind > #vars.tags or (screen_ind == #vars.tags and index_delta > #vars.tags[screen_ind]) then
+               -- meaning higher than screen number
+               -- OR last screen doesn't have enough tags
+               return
+            end
+         end
+
+         
+         awful.screen.focus(screen_ind)
          local screen = awful.screen.focused()
-         local tag = screen.tags[index]
+         local tag = screen.tags[index_delta]
          if tag then
             tag:view_only(tag)
          end
       end
    },
    awful.key{
+      -- Toggle tag so multiple tags can be selected simultaniously
       modifiers   = {mod.super, mod.ctrl},
       keygroup    = 'numrow',
       description = 'toggle tag',
       group       = 'tag',
       on_press    = function(index)
+         local screen_ind = 1
+         local index_delta = index
+
+         while index_delta - #vars.tags[screen_ind] > 0 do
+            index_delta = index_delta - #vars.tags[screen_ind]
+            screen_ind = screen_ind + 1
+            if screen_ind > #vars.tags or (screen_ind == #vars.tags and index_delta > #vars.tags[screen_ind]) then
+               -- meaning higher than screen number
+               -- OR last screen doesn't have enough tags
+               return
+            end
+         end
+
+         awful.screen.focus(screen_ind)
          local screen = awful.screen.focused()
-         local tag = screen.tags[index]
+         local tag = screen.tags[index_delta]
          if tag then
-            tag:viewtoggle(tag)
+            awful.tag.viewtoggle(tag)
          end
       end
    },
    awful.key{
+      -- Move client from one tag to another, even if the other tab is on another screen
       modifiers   = {mod.super, mod.shift},
       keygroup    = 'numrow',
       description = 'move focused client to tag',
       group       = 'tag',
       on_press    = function(index)
          if client.focus then
-            local tag = client.focus.screen.tags[index]
+
+            local screen_ind = 1
+            local index_delta = index
+
+            while index_delta - #vars.tags[screen_ind] > 0 do
+               index_delta = index_delta - #vars.tags[screen_ind]
+               screen_ind = screen_ind + 1
+               if screen_ind > #vars.tags or (screen_ind == #vars.tags and index_delta > #vars.tags[screen_ind]) then
+                  -- meaning higher than screen number
+                  -- OR last screen doesn't have enough tags
+                  return
+               end
+            end
+
+            local tag = screen[screen_ind].tags[index_delta]
             if tag then
                client.focus:move_to_tag(tag)
             end
          end
       end
    },
-   awful.key {
-      modifiers   = {mod.super, mod.ctrl, mod.shift},
-      keygroup    = 'numrow',
-      description = 'toggle focused client on tag',
-      group       = 'tag',
-      on_press    = function(index)
-         if client.focus then
-            local tag = client.focus.screen.tags[index]
-            if tag then
-               client.focus:toggle_tag(tag)
-            end
-         end
-      end,
-   },
+   -- Not needed but left in for completeness
+   -- awful.key {
+   --    modifiers   = {mod.super, mod.ctrl, mod.shift},
+   --    keygroup    = 'numrow',
+   --    description = 'toggle focused client on tag',
+   --    group       = 'tag',
+   --    on_press    = function(index)
+   --       if client.focus then
+   --          local tag = client.focus.screen.tags[index]
+   --          if tag then
+   --             client.focus:toggle_tag(tag)
+   --          end
+   --       end
+   --    end,
+   -- },
    awful.key{
       modifiers   = {mod.super},
       keygroup    = 'numpad',

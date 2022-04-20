@@ -79,7 +79,7 @@ client.connect_signal('request::default_keybindings', function()
       awful.key{
          modifiers   = {mod.super, mod.shift},
          key         = 'm',
-         description = '(un)maximize horizontally',
+         description = '[un]maximize horizontally',
          group       = 'client',
          on_press    = function(c)
             c.maximized_horizontal = not c.maximized_horizontal
