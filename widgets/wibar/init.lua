@@ -17,7 +17,7 @@ return function(s)
       layoutbox      = layoutbox(s),
       taglist        = taglist(s),
       tasklist       = tasklist(s),
-      keyboardlayout = awful.widget.keyboardlayout(),
+      -- keyboardlayout = awful.widget.keyboardlayout(),
       promptbox      = awful.widget.prompt(),
       systray        = wibox.widget.systray(),
       textclock      = wibox.widget.textclock(),
@@ -38,15 +38,14 @@ return function(s)
          end
       end)
 
-   s.testwidget = awful.widget.watch('bash -c "sensors | grep SMBUSMASTER | cut -d \':\' -f 2 | cut -d \'+\' -f 2 | xargs"', 5)
 
    if s.index == 1 then
       s.multiwidget = multiwidget
    else
       s.multiwidget = nil
    end
+   -- s.multiwidget = multiwidget
 
-   s.multiwidget = multiwidget
 
    s.widgets.wibar = awful.wibar{
       screen = s,
@@ -65,8 +64,6 @@ return function(s)
          {
             layout = wibox.layout.fixed.horizontal,
             s.multiwidget,
-            s.testwidget,
-            s.widgets.keyboardlayout,
             s.widgets.brightness,
             s.widgets.battery,
             s.widgets.systray,
