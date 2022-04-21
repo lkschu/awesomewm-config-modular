@@ -52,7 +52,6 @@ return function(s)
             widget = wibox.container.margin
          },
 
-         {
          {  -- 'bottom' widget, containing icon and number
             { 
                {
@@ -60,7 +59,12 @@ return function(s)
                   --stylesheet = "* {color : " .. beautiful.fg_normal .. ";}",
                   stylesheet = "* {color : #ff0000;}",
                   widget = wibox.widget.imagebox },
-                  { { id = 'text_role', widget = wibox.widget.textbox }, top = -5, widget = wibox.container.margin },
+                  { 
+                     { 
+                        id = 'text_role', 
+                        widget = wibox.widget.textbox, 
+                     }, 
+                     top = -5, widget = wibox.container.margin },
                   layout = wibox.layout.fixed.horizontal,
                },
                fill_horizontal = true,
@@ -74,9 +78,8 @@ return function(s)
             forced_width = vars.tagwidth,
          },
          bottom = 1,
-         widget = wibox.container.margin
-      },
          layout = wibox.layout.align.vertical,
+         widget = wibox.container.margin,
       },
    }
    return mytaglist
