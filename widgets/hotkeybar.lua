@@ -22,8 +22,7 @@ function makebutton(icon, cmd)
             }
     button:connect_signal("mouse::enter", function(c) c:set_fg(beautiful.fg_focus) local wb = mouse.current_wibox old_cursor, old_wibox = wb.cursor, wb wb.cursor = "hand2" end)
     button:connect_signal("mouse::leave", function(c) c:set_fg(beautiful.fg_normal) if old_wibox then old_wibox.cursor = old_cursor old_wibox = nil end end)
-    --button:connect_signal("button::press", function(c) c:set_fg("#000000") awful.spawn(terminal .." -e ".. cmd) end)
-    button:connect_signal("button::press", function(c) c:set_fg("#000000") awful.spawn(cmd) end)
+    button:connect_signal("button::press", function(c) c:set_fg("#00000099") awful.spawn(cmd) end)
     button:connect_signal("button::release", function(c) c:set_fg(beautiful.fg_focus) end)
     return button
 end

@@ -66,7 +66,7 @@ return function(s)
    s.seperator = wibox.widget {
       {
          orientation = 'vertical',
-         forced_width  = 20,
+         forced_width  = 10,
          --forced_height = 14,
          thickness     = 1,
          -- shape           = gears.shape.powerline,
