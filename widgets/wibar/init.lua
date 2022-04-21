@@ -1,5 +1,7 @@
 local awful = require'awful'
 local wibox = require'wibox'
+local gears = require'gears'
+local beautiful = require'beautiful'
 
 local menu = require'widgets.menu'
 local taglist = require'widgets.wibar.taglist'
@@ -9,21 +11,72 @@ local battery_widget = require("widgets.awesome-wm-widgets.battery-widget.batter
 local brightness_widget = require("widgets.awesome-wm-widgets.brightness-widget.brightness")
 
 local calendar_widget = require("widgets.awesome-wm-widgets.calendar-widget.calendar")
-
 local multiwidget = require'widgets.multiwidget'
 
+local vars = require"config.vars"
+
 return function(s)
+   local systray = nil
+   local systrayscreen = vars.systray_screen or 1
+   -- if s.index == systrayscreen then 
+   --    systray = wibox.widget.systray()
+   --    -- systray.visible = true
+   --    -- systray.set_screen(systrayscreen)
+   --    -- systray = wibox.widget {
+   --    --    {
+   --    --       systray,
+   --    --       top = 1,
+   --    --       bottom = 1,
+   --    --       left = 5,
+   --    --       right = 5,
+   --    --       widget = wibox.container.margin
+   --    --    },
+   --    --    shape = gears.shape.rounded_rect,
+   --    --    shape_border_width = 1,
+   --    --    shape_border_color = beautiful.tasklist_bg_normal,
+   --    --    bg = beautiful.bg_systray,
+   --    --    widget = wibox.container.background
+   --    -- }
+   --    -- -- systray = awful.widget.only_on_screen(systray, systrayscreen)
+   -- end
+
+   -- if s.index == 1 then
+   --    systray = wibox.container.only_on_screen:setup {
+   --       widget = wibox.widget.systray(),
+   --       screen = systrayscreen
+   --    }
+   -- end
+
+   systray = wibox.widget.systray()
+
    s.widgets = {
       layoutbox      = layoutbox(s),
       taglist        = taglist(s),
       tasklist       = tasklist(s),
       -- keyboardlayout = awful.widget.keyboardlayout(),
+      hotkeybar      = require'widgets.hotkeybar',
       promptbox      = awful.widget.prompt(),
-      systray        = wibox.widget.systray(),
+      systray        = systray,
       textclock      = wibox.widget.textclock(),
       -- battery        = battery_widget({show_current_level=true, margin_right=4}),
       -- brightness     = brightness_widget({type='icon_and_text', program='xbacklight',step=5,tooltip=true,path_to_icon='/usr/share/icons/Arc/status/symbolic/display-brightness-symbolic.svg'})
       -- brightness     = brightness_widget({type='arc', program='xbacklight',step=5,tooltip=true})
+   }
+
+   s.seperator = wibox.widget {
+      {
+         orientation = 'vertical',
+         forced_width  = 20,
+         --forced_height = 14,
+         thickness     = 1,
+         -- shape           = gears.shape.powerline,
+         -- shape           = gears.shape.circle,
+         color         = beautiful.bg_minimize,
+         widget        = wibox.widget.separator
+      },
+      valign = 'center',
+      halign = 'center',
+      widget = wibox.container.place,
    }
 
    s.cal_w = calendar_widget({
@@ -57,6 +110,9 @@ return function(s)
             --menu.launcher,
             s.widgets.taglist,
             s.widgets.promptbox,
+            s.seperator,
+            s.widgets.hotkeybar,
+            s.seperator,
          },
          -- middle widgets
          s.widgets.tasklist,

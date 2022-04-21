@@ -1,5 +1,24 @@
 # Awesome AwesomeWM RC
 
+Xephyr (and awmtt) can be used to develop and debug awesome wm.
+
+Run a standalone xorg server in a window by running: 
+
+    Xephyr :1 -ac -br -noreset -screen 1920x1080 &
+
+Now by specifying the used display variable programs can be executed inside Xephyr: 
+
+    DISPLAY=:1 awesome -c ~/.config/awesome/rc.lua
+
+----
+
+## TODO
+
+ - taglist must be rewritten so svg stylesheets are applied and per tag font selection is possible
+ - systray is on the wrong screen, is possible to fix be restructuring wibar setup but more elegant solution might be possible
+
+----
+
 This is the default **[awesome-git](https://awesomewm.org/apidoc/)** `rc.lua`,
 but structured for better customization and modularity. Initially, i did
 it for myself, because i needed something to start with, and i decided to

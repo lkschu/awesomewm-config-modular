@@ -2,6 +2,7 @@ local awful = require 'awful'
 local gears = require 'gears'
 local wibox = require 'wibox'
 
+local beautiful = require 'beautiful'
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
 
@@ -55,7 +56,10 @@ return function(s)
          {  -- 'bottom' widget, containing icon and number
             { 
                {
-                  { id = 'icon_role', widget = wibox.widget.imagebox },
+                  { id = 'icon_role', 
+                  --stylesheet = "* {color : " .. beautiful.fg_normal .. ";}",
+                  stylesheet = "* {color : #ff0000;}",
+                  widget = wibox.widget.imagebox },
                   { { id = 'text_role', widget = wibox.widget.textbox }, top = -5, widget = wibox.container.margin },
                   layout = wibox.layout.fixed.horizontal,
                },

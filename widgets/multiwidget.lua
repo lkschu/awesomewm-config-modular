@@ -110,31 +110,41 @@ module.buttons_example:setup({
    widget = wibox.container.margin
 })
 
--- module.buttons_example = wibox.widget {   
---    homogeneous = true,
---    spacing = module.wd_space_inner,
---    forced_num_cols = module.wd_columns,
---    layout = wibox.layout.grid,
--- }
-
--- module.buttons_example:add_widget_at(module.widgets[2], module.buttons_example.get_next_empty()[1], module.buttons_example.get_next_empty()[2])
--- module.buttons_example:add_widget_at(module.widgets[1], 1,1,1,1)
-
---module.buttons_example = wibox.container.margin {
---   module.buttons_example,
---   margins = module.wd_space_outer,
---   widget = wibox.container.margin
---
---}
-
-
-
 
 -- Button to open multiwidget
+-- -- Text Version
+-- local sym_closed = ""
+-- local sym_opened = ""
+-- local multi_widget_text = wibox.widget {
+--    text = sym_closed,
+--    widget = wibox.widget.textbox
+-- }
+-- multi_widget_text.make_open = function()
+--    multi_widget_text.text = sym_opened
+-- end
+-- multi_widget_text.make_close = function()
+--    multi_widget_text.text = sym_closed
+-- end
+
+-- SVG Version
+local sym_closed = beautiful.icons.chevron_right
+local sym_opened = beautiful.icons.chevron_down
 local multi_widget_text = wibox.widget {
-   text = " ",
-   widget = wibox.widget.textbox
+   stylesheet = "* {color : " .. beautiful.fg_normal ..";}",
+   image = sym_closed,
+   widget = wibox.widget.imagebox
 }
+multi_widget_text.make_open = function()
+   multi_widget_text.image = sym_opened
+   multi_widget_text.stylesheet = "* {color : " .. beautiful.fg_focus ..";}"
+end
+multi_widget_text.make_close = function()
+   multi_widget_text.image = sym_closed
+   multi_widget_text.stylesheet = "* {color : " .. beautiful.fg_normal ..";}"
+end
+
+
+
 local multi_widget = wibox.widget {
    {
       multi_widget_text,
@@ -147,7 +157,7 @@ local multi_widget = wibox.widget {
    bg = beautiful.bg_normal, -- basic
    -- bg = '#00000000', --tranparent
    shape_border_width = module.wd_border_width,
-   shape_border_color = beautiful.bg_systray, -- outline
+   shape_border_color = beautiful.bg_minimize, -- outline
    shape = function(cr, width, height)
        gears.shape.rounded_rect(cr, width, height, 4)
    end,
@@ -161,7 +171,7 @@ module.buttons_example.visible = false
 local old_cursor, old_wibox
 multi_widget:connect_signal("button::press", function(c)
    if module.buttons_example.visible == false then
-      multi_widget_text.text = " "
+      multi_widget_text.make_open()
       awful.placement.top_right(module.buttons_example, {
          margins = {
             top = 40,
@@ -171,16 +181,24 @@ multi_widget:connect_signal("button::press", function(c)
       })
       module.buttons_example.visible = true
       -- module.buttons_example:move_next_to(mouse.current_widget_geometry)
-      local wb = mouse.current_wibox
-      old_cursor, old_wibox = wb.cursor, wb
-      wb.cursor = "hand1"
    else
-      multi_widget_text.text = " "
+      multi_widget_text.make_close()
       module.buttons_example.visible = false
       if old_wibox then
          old_wibox.cursor = old_cursor
          old_wibox = nil
       end
+   end
+end)
+multi_widget:connect_signal("mouse::enter", function(c)
+   local wb = mouse.current_wibox
+   old_cursor, old_wibox = wb.cursor, wb
+   wb.cursor = "hand2"
+end)
+multi_widget:connect_signal("mouse::leave", function(c)
+   if old_wibox then
+      old_wibox.cursor = old_cursor
+      old_wibox = nil
    end
 end)
 return multi_widget

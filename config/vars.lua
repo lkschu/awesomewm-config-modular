@@ -28,20 +28,27 @@ _M.layouts = {
 -- nil,"right","top","bottom" or "left"
 _M.titlebar_position = "right"
 
-local cpu_widget = require("widgets.awesome-wm-widgets.cpu-widget.cpu-widget")
-
--- _M.xyz = awful.widget.watch('bash -c "sensors | grep SMBUSMASTER | cut -d \':\' -f 2 | cut -d \'+\' -f 2 | xargs"', 5)
 _M.mw_widgets = {
    awful.widget.keyboardlayout(),
-   -- awful.widget.keyboardlayout(),
-   wibox.widget.textclock(),
-   --awful.widget.watch('bash -c "sensors | grep SMBUSMASTER | cut -d \':\' -f 2 | cut -d \'+\' -f 2 | xargs"', 5),
-   --awful.widget.watch('bash -c "free -h | grep Mem: | awk \'{print $7 }\'"', 5)
-   --awful.widget.watch('bash -c "sensors | grep SMBUSMASTER | cut -d \':\' -f 2 | cut -d \'+\' -f 2 | xargs"', 5),
-   cpu_widget({ width = 60, step_width = 4, step_spacing = 0, color = '#31D662', background_color = '#CCD4FF' })
+   -- wibox.widget.textclock(),
+   wibox.widget {
+      { awful.widget.watch('bash -c "sensors | grep SMBUSMASTER | cut -d \':\' -f 2 | cut -d \'+\' -f 2 | xargs"', 5), margins = 20, widget = wibox.container.margin },
+      forced_height = 30,
+      forced_width = 50,
+      widget = wibox.container.background
+   },
+   wibox.widget {
+      { awful.widget.watch('bash -c "free -h | grep Mem: | awk \'{print $7 }\'"', 5), margins = 20, widget = wibox.container.margin },
+      forced_height = 30,
+      forced_width = 50,
+      widget = wibox.container.background
+   },
+   require("widgets.awesome-wm-widgets.cpu-widget.cpu-widget")({ width = 60, step_width = 4, step_spacing = 0, static_color = false, color = '#31D662', background_color = '#CCD4FF' })
 }
 
       
+_M.primary_screen = 1
+_M.systray_screen = 1 -- systray can always only be on one screen
 
 _M.tagwidth = 38
 _M.tags = {'1', '2', '', '4', '@'}
@@ -52,10 +59,10 @@ _M.tags = {{'1'}, {'2'}, {'3'}, {'4'}, {'5'}}
 
 
 
-
+_M.tags_icon_font = true -- not yet used
 _M.tags = {
    { -- Screen 1
-      { name = '1', icon = beautiful.icons.terminal },
+      { name = '1', icon = beautiful.icons.terminal},
       { name = '2', icon = nil, },
       { name = '3', icon = nil, },
       { name = '4', icon = nil, },

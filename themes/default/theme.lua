@@ -91,8 +91,15 @@ theme.xcolor15 = "#FDFFF0"
 
 -- theme.font          = "BlexNerd Font Mono 9"
 -- theme.font          = "FiraCode Nerd Font 8"
+-- theme.font = "FuraMono Nerd Font 12"  -- non monospaced
 -- theme.font          = "VictorMono Nerd Font 12"
-theme.font = "monofur Nerd Font 12"
+-- theme.font = "Hurmit Nerd Font 12"
+-- theme.font = "mononoki Nerd Font 12"
+-- theme.font = "ProFontIIx Nerd Font 10"
+theme.font = "monofur Nerd Font 13"
+
+-- icon font SHOULD be a proportional (i.e. non monospaced) font so nerd font icons can be displayed properly
+theme.icon_font = "Inter Nerd Font 16"
 theme.useless_gap = dpi(4)
 theme.border_width = dpi(5)
 
@@ -118,6 +125,7 @@ theme.bg_focus = theme.xcolor12
 theme.bg_urgent = theme.xcolor1
 theme.bg_minimize = theme.xbackground
 theme.bg_systray = theme.bg_normal
+theme.bg_systray = theme.xforeground
 
 theme.fg_normal = theme.xforeground
 theme.fg_focus = theme.xcolor15
@@ -175,6 +183,8 @@ theme.menu_width = dpi(100)
 theme.icons = {}
 icons_path = os.getenv("HOME") .. "/.config/awesome/themes/default/icons/"
 theme.icons.terminal = icons_path .. "feather/terminal.svg"
+theme.icons.chevron_right = icons_path .. "feather/chevron-right.svg"
+theme.icons.chevron_down = icons_path .. "feather/chevron-down.svg"
 
 -- You can add as many variables as
 -- you wish and access them by using
