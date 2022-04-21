@@ -1,0 +1,3 @@
+[submodule "widgets/awesome-wm-widgets"]
+	path = widgets/awesome-wm-widgets
+	url = git@github.com:lkschu/awesome-wm-widgets.git
